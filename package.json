@@ -7,6 +7,23 @@
   "author": "Austin John Mayer",
   "license": "MIT",
   "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tronicboy1/lit-markdown"
+  },
+  "bugs": {
+    "url": "https://github.com/tronicboy1/lit-markdown/issues"
+  },
+  "keywords": [
+    "marked",
+    "markedjs",
+    "lit",
+    "directive",
+    "markdown",
+    "markup",
+    "html",
+    "sanitize"
+  ],
   "dependencies": {
     "lit": "^2.3.1",
     "marked": "^4.1.0",

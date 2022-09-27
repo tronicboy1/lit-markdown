@@ -1,3 +1,5 @@
+[npm](https://www.npmjs.com/package/lit-markdown)
+
 # About this Package
 
 This package is an extension of [Lit's Directives](https://lit.dev/docs/api/directives/) to add markdown rendering functionality.
