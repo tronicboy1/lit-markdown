@@ -1,8 +1,9 @@
 {
   "name": "lit-markdown",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A package for rendering Markdown in LitElements.",
-  "main": "index.js",
+  "main": "lib",
+  "types": "lib",
   "author": "Austin John Mayer",
   "license": "MIT",
   "private": false,
