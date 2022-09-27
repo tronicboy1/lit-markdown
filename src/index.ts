@@ -11,6 +11,7 @@ import sanitizeHTML, { defaults } from "sanitize-html";
 export class MarkdownDirective extends AsyncDirective {
   render(rawMarkdown: string, options?: { includeImages?: boolean; loadingHTML?: string }) {
     const mergedOptions = Object.assign({ includeImages: false, loadingHTML: "<p>Loading...</p>" }, options ?? {});
+
     const allowedTags = mergedOptions.includeImages ? [...defaults.allowedTags, "img"] : defaults.allowedTags;
     new Promise<string>((resolve, reject) => {
       marked.parse(rawMarkdown, (error, result) => {
