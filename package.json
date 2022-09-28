@@ -2,8 +2,14 @@
   "name": "lit-markdown",
   "version": "1.0.3",
   "description": "A package for rendering Markdown in LitElements.",
-  "main": "lib",
-  "types": "lib",
+  "main": "lib/import",
+  "type": "module",
+  "exports": {
+    "types": "./lib/import/index.d.ts",
+    "import": "./lib/import/index.js",
+    "require": "./lib/commonjs/index.js"
+  },
+  "types": "lib/import",
   "author": "Austin John Mayer",
   "license": "MIT",
   "private": false,
@@ -37,11 +43,11 @@
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "prettier": "^2.7.1",
-    "typescript": "^4.8.3"
+    "typescript": "^4.8.4"
   },
   "scripts": {
     "format": "prettier --write ./",
     "lint": "eslint ./src",
-    "build": "tsc"
+    "build": "tsc && tsc -p tsconfig.node.json"
   }
 }

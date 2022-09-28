@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "outDir": "lib/commonjs",
+    "sourceMap": false,
+    "declaration": false,
+    "declarationMap": false
+  },
+  "extends": "./tsconfig.json"
+}
