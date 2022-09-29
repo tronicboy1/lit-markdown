@@ -1,32 +1,14 @@
-import { directive } from "lit/directive.js";
-import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { AsyncDirective } from "lit/async-directive.js";
-import { marked } from "marked";
-import sanitizeHTML, { defaults } from "sanitize-html";
-
 /**
  * An async directive to render markdown in a LitElement's render function.
  * Images can be included or removed in the executor's options.
  */
-export class MarkdownDirective extends AsyncDirective {
-  render(rawMarkdown: string, options?: { includeImages?: boolean; loadingHTML?: string }) {
-    const mergedOptions = Object.assign({ includeImages: false, loadingHTML: "<p>Loading...</p>" }, options ?? {});
-
-    const allowedTags = mergedOptions.includeImages ? [...defaults.allowedTags, "img"] : defaults.allowedTags;
-    new Promise<string>((resolve, reject) => {
-      marked.parse(rawMarkdown, (error, result) => {
-        if (error) return reject(error);
-        resolve(result);
-      });
-    }).then((rawHTML) => {
-      const sanitizedHTML = sanitizeHTML(rawHTML, { allowedTags });
-      const renderedHTML = unsafeHTML(sanitizedHTML);
-      this.setValue(renderedHTML);
-    });
-    return unsafeHTML(mergedOptions.loadingHTML);
-  }
+export declare class MarkdownDirective extends AsyncDirective {
+    render(rawMarkdown: string, options?: {
+        includeImages?: boolean;
+        loadingHTML?: string;
+    }): import("lit-html/directive").DirectiveResult<typeof import("lit-html/directives/unsafe-html").UnsafeHTMLDirective>;
 }
-
 /**
  * An asyn directive used to render markedown in a LitElement's render function.
  *
@@ -48,4 +30,8 @@ export class MarkdownDirective extends AsyncDirective {
  * @param {RenderParameters[0]} rawMarkdown Markdown to be rendered.
  * @param {RenderParameters[1]} options
  */
-export const resolveMarkdown = directive(MarkdownDirective);
+export declare const resolveMarkdown: (rawMarkdown: string, options?: {
+    includeImages?: boolean | undefined;
+    loadingHTML?: string | undefined;
+} | undefined) => import("lit-html/directive").DirectiveResult<typeof MarkdownDirective>;
+//# sourceMappingURL=index.d.mts.map
