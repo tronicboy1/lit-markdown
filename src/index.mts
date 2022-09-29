@@ -2,7 +2,7 @@ import { directive } from "lit/directive.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { AsyncDirective } from "lit/async-directive.js";
 import { marked } from "marked";
-import sanitizeHTML, { defaults } from "sanitize-html";
+import sanitizeHTML from "sanitize-html";
 
 /**
  * An async directive to render markdown in a LitElement's render function.
@@ -12,7 +12,7 @@ export class MarkdownDirective extends AsyncDirective {
   render(rawMarkdown: string, options?: { includeImages?: boolean; loadingHTML?: string }) {
     const mergedOptions = Object.assign({ includeImages: false, loadingHTML: "<p>Loading...</p>" }, options ?? {});
 
-    const allowedTags = mergedOptions.includeImages ? [...defaults.allowedTags, "img"] : defaults.allowedTags;
+    const allowedTags = mergedOptions.includeImages ? [...sanitizeHTML.defaults.allowedTags, "img"] : sanitizeHTML.defaults.allowedTags;
     new Promise<string>((resolve, reject) => {
       marked.parse(rawMarkdown, (error, result) => {
         if (error) return reject(error);
