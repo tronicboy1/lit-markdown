@@ -13,7 +13,7 @@
   "rules": {
     "indent": ["error", 2, { "SwitchCase": 1, "ignoredNodes": ["TemplateLiteral *"] }],
     "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "double"],
+    "quotes": ["error", "double", { "avoidEscape": true }],
     "semi": ["error", "always"],
     "no-nested-ternary": 1, // コードが読みづらくなるので、書き直すべき
     "no-else-return": 1, // else returnでなく、最後にreturnを書くべき
