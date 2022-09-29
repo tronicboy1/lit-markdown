@@ -34,4 +34,4 @@ export declare const resolveMarkdown: (rawMarkdown: string, options?: {
     includeImages?: boolean | undefined;
     loadingHTML?: string | undefined;
 } | undefined) => import("lit-html/directive").DirectiveResult<typeof MarkdownDirective>;
-//# sourceMappingURL=index.d.ts.map
+//# sourceMappingURL=index.d.mts.map
