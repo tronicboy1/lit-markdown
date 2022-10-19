@@ -50,7 +50,7 @@ export class MyElement extends LitElement {
   render() {
     return html`<label for="markdown">Input</label><textarea name="markdown" id="markdown"></textarea>
       <p>Output</p>
-      <article>${resolveMarkdown(this.raw, { includeImages: true })}</article>`;
+      <article>${resolveMarkdown(this.raw, { includeImages: true, includeCodeBlockClassNames: true })}</article>`;
   }
 }
 ```
