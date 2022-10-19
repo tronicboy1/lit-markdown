@@ -22,13 +22,16 @@ export class MarkdownDirective extends AsyncDirective {
     const allowedTags = mergedOptions.includeImages
       ? [...sanitizeHTML.defaults.allowedTags, "img"]
       : sanitizeHTML.defaults.allowedTags;
+    const allowedClasses: sanitizeHTML.IOptions["allowedClasses"] = mergedOptions.includeCodeBlockClassNames
+      ? { code: ["*"] }
+      : {};
     new Promise<string>((resolve, reject) => {
       marked.parse(rawMarkdown, (error, result) => {
         if (error) return reject(error);
         resolve(result);
       });
     }).then((rawHTML) => {
-      const sanitizedHTML = sanitizeHTML(rawHTML, { allowedTags });
+      const sanitizedHTML = sanitizeHTML(rawHTML, { allowedTags, allowedClasses });
       const renderedHTML = unsafeHTML(sanitizedHTML);
       this.setValue(renderedHTML);
     });
