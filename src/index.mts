@@ -4,38 +4,53 @@ import { AsyncDirective } from "lit/async-directive.js";
 import { marked } from "marked";
 import sanitizeHTML from "sanitize-html";
 
-type Options = { includeImages?: boolean; includeCodeBlockClassNames?: boolean; loadingHTML?: string };
+const defaultOptions = {
+  includeImages: false,
+  includeCodeBlockClassNames: false,
+  loadingHTML: "<p>Loading...</p>",
+  skipSanitization: false,
+};
+type Options = typeof defaultOptions;
 
 /**
  * An async directive to render markdown in a LitElement's render function.
  * Images can be included or removed in the executor's options.
  */
 export class MarkdownDirective extends AsyncDirective {
-  render(rawMarkdown: string, options?: Options) {
-    const defaultSettings: Options = {
-      includeImages: false,
-      includeCodeBlockClassNames: false,
-      loadingHTML: "<p>Loading...</p>",
-    };
-    const mergedOptions = Object.assign(defaultSettings, options ?? {});
-
-    const allowedTags = mergedOptions.includeImages
+  private sanitizeHTMLWithOptions(rawHTML: string, options: Options): string {
+    const allowedTags = options.includeImages
       ? [...sanitizeHTML.defaults.allowedTags, "img"]
       : sanitizeHTML.defaults.allowedTags;
-    const allowedClasses: sanitizeHTML.IOptions["allowedClasses"] = mergedOptions.includeCodeBlockClassNames
+    const allowedClasses: sanitizeHTML.IOptions["allowedClasses"] = options.includeCodeBlockClassNames
       ? { code: ["*"] }
       : {};
+    return sanitizeHTML(rawHTML, { allowedTags, allowedClasses });
+  }
+
+  render(rawMarkdown: string, options?: Partial<Options>) {
+    const mergedOptions = Object.assign(defaultOptions, options ?? {});
+
     new Promise<string>((resolve, reject) => {
       marked.parse(rawMarkdown, (error, result) => {
         if (error) return reject(error);
         resolve(result);
       });
-    }).then((rawHTML) => {
-      const sanitizedHTML = sanitizeHTML(rawHTML, { allowedTags, allowedClasses });
-      const renderedHTML = unsafeHTML(sanitizedHTML);
-      this.setValue(renderedHTML);
-    });
-    return unsafeHTML(mergedOptions.loadingHTML);
+    })
+      .then((rawHTML) => {
+        if (mergedOptions.skipSanitization) {
+          return Promise.resolve(rawHTML);
+        }
+        return Promise.resolve(this.sanitizeHTMLWithOptions(rawHTML, mergedOptions));
+      })
+      .then((preparedHTML) => {
+        const renderedHTML = unsafeHTML(preparedHTML);
+        this.setValue(renderedHTML);
+      });
+
+    const placeholderHTML = mergedOptions.skipSanitization
+      ? mergedOptions.loadingHTML
+      : this.sanitizeHTMLWithOptions(mergedOptions.loadingHTML, mergedOptions);
+    return unsafeHTML(placeholderHTML);
   }
 }
 
@@ -45,7 +60,12 @@ export class MarkdownDirective extends AsyncDirective {
  * Rendering pictures can be enabled through the settings.
  * Css class names for code blocks may also be enabled through settings.
  *
+ * setting the "skipSanitization" option to true will skip the sanitization process and render markdown as raw HTML.
+ * _Use with caution!_
+ *
  * The default loading html may also be replaced.
+ * This default HTML is also sanitized by default.
+ * If the "skipSanitization" option is true, the default HTML will also not be sanitized.
  *
  * @example render() {
  *            const rawMarkdown = `# Hello World`

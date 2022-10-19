@@ -1,15 +1,18 @@
 import { AsyncDirective } from "lit/async-directive.js";
-declare type Options = {
-    includeImages?: boolean;
-    includeCodeBlockClassNames?: boolean;
-    loadingHTML?: string;
+declare const defaultOptions: {
+    includeImages: boolean;
+    includeCodeBlockClassNames: boolean;
+    loadingHTML: string;
+    skipSanitization: boolean;
 };
+declare type Options = typeof defaultOptions;
 /**
  * An async directive to render markdown in a LitElement's render function.
  * Images can be included or removed in the executor's options.
  */
 export declare class MarkdownDirective extends AsyncDirective {
-    render(rawMarkdown: string, options?: Options): import("lit-html/directive").DirectiveResult<typeof import("lit-html/directives/unsafe-html").UnsafeHTMLDirective>;
+    private sanitizeHTMLWithOptions;
+    render(rawMarkdown: string, options?: Partial<Options>): import("lit-html/directive").DirectiveResult<typeof import("lit-html/directives/unsafe-html").UnsafeHTMLDirective>;
 }
 /**
  * An asyn directive used to render markedown in a LitElement's render function.
@@ -17,7 +20,12 @@ export declare class MarkdownDirective extends AsyncDirective {
  * Rendering pictures can be enabled through the settings.
  * Css class names for code blocks may also be enabled through settings.
  *
+ * setting the "skipSanitization" option to true will skip the sanitization process and render markdown as raw HTML.
+ * _Use with caution!_
+ *
  * The default loading html may also be replaced.
+ * This default HTML is also sanitized by default.
+ * If the "skipSanitization" option is true, the default HTML will also not be sanitized.
  *
  * @example render() {
  *            const rawMarkdown = `# Hello World`
@@ -33,6 +41,11 @@ export declare class MarkdownDirective extends AsyncDirective {
  * @param {RenderParameters[0]} rawMarkdown Markdown to be rendered.
  * @param {RenderParameters[1]} options
  */
-export declare const resolveMarkdown: (rawMarkdown: string, options?: Options | undefined) => import("lit-html/directive").DirectiveResult<typeof MarkdownDirective>;
+export declare const resolveMarkdown: (rawMarkdown: string, options?: Partial<{
+    includeImages: boolean;
+    includeCodeBlockClassNames: boolean;
+    loadingHTML: string;
+    skipSanitization: boolean;
+}> | undefined) => import("lit-html/directive").DirectiveResult<typeof MarkdownDirective>;
 export {};
 //# sourceMappingURL=index.d.mts.map
