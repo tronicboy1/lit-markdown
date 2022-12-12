@@ -5,7 +5,7 @@ declare const defaultOptions: {
     loadingHTML: string;
     skipSanitization: boolean;
 };
-declare type Options = typeof defaultOptions;
+type Options = typeof defaultOptions;
 /**
  * An async directive to render markdown in a LitElement's render function.
  * Images can be included or removed in the executor's options.
