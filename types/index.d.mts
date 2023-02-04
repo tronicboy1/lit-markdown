@@ -1,16 +1,16 @@
 import { AsyncDirective } from "lit/async-directive.js";
-declare const defaultOptions: {
-    includeImages: boolean;
-    includeCodeBlockClassNames: boolean;
-    loadingHTML: string;
-    skipSanitization: boolean;
-};
-type Options = typeof defaultOptions;
+type Options = typeof MarkdownDirective.defaultOptions;
 /**
  * An async directive to render markdown in a LitElement's render function.
  * Images can be included or removed in the executor's options.
  */
 export declare class MarkdownDirective extends AsyncDirective {
+    static defaultOptions: {
+        includeImages: boolean;
+        includeCodeBlockClassNames: boolean;
+        loadingHTML: string;
+        skipSanitization: boolean;
+    };
     private sanitizeHTMLWithOptions;
     render(rawMarkdown: string, options?: Partial<Options>): import("lit-html/directive").DirectiveResult<typeof import("lit-html/directives/unsafe-html").UnsafeHTMLDirective>;
 }

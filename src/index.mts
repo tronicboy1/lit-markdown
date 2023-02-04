@@ -4,19 +4,20 @@ import { AsyncDirective } from "lit/async-directive.js";
 import { marked } from "marked";
 import sanitizeHTML from "sanitize-html";
 
-const defaultOptions = {
-  includeImages: false,
-  includeCodeBlockClassNames: false,
-  loadingHTML: "<p>Loading...</p>",
-  skipSanitization: false,
-};
-type Options = typeof defaultOptions;
+type Options = typeof MarkdownDirective.defaultOptions;
 
 /**
  * An async directive to render markdown in a LitElement's render function.
  * Images can be included or removed in the executor's options.
  */
 export class MarkdownDirective extends AsyncDirective {
+  static defaultOptions = {
+    includeImages: false,
+    includeCodeBlockClassNames: false,
+    loadingHTML: "<p>Loading...</p>",
+    skipSanitization: false,
+  };
+
   private sanitizeHTMLWithOptions(rawHTML: string, options: Options): string {
     const allowedTags = options.includeImages
       ? [...sanitizeHTML.defaults.allowedTags, "img"]
@@ -28,7 +29,7 @@ export class MarkdownDirective extends AsyncDirective {
   }
 
   render(rawMarkdown: string, options?: Partial<Options>) {
-    const mergedOptions = Object.assign(defaultOptions, options ?? {});
+    const mergedOptions = Object.assign(MarkdownDirective.defaultOptions, options ?? {});
 
     new Promise<string>((resolve, reject) => {
       marked.parse(rawMarkdown, (error, result) => {
